@@ -1,0 +1,28 @@
+{
+  "name": "e-commerce-mern",
+  "version": "1.0.0",
+  "description": "Shopping-Cart MERN Stack",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dineshdsv3/E-Commerce-MERN.git"
+  },
+  "keywords": [
+    "E-Commerce",
+    "MERN",
+    "React",
+    "Node"
+  ],
+  "author": "dineshdsv3@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dineshdsv3/E-Commerce-MERN/issues"
+  },
+  "homepage": "https://github.com/dineshdsv3/E-Commerce-MERN#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
