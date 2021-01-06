@@ -3,9 +3,9 @@ import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { getUserDetails } from '../actions/userActions';
+import { getUserDetails, updateUserDetails } from '../actions/userActions';
 
-const ProfileScreen = ({ location, history }) => {
+const ProfileScreen = ({ history }) => {
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -14,19 +14,28 @@ const ProfileScreen = ({ location, history }) => {
 
 	const dispatch = useDispatch();
 
+	// Get the user details from reducer
 	const userDetails = useSelector((state) => state.userDetails);
 	const { loading, error, user } = userDetails;
 
+	// To get the logged in user
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
 
+	// To get the success message from state
+	const userUpdate = useSelector((state) => state.userUpdate);
+	const { success } = userUpdate;
+
 	useEffect(() => {
+		// if there is no user in redux state go to login
 		if (!userInfo) {
 			history.push('/login');
 		} else {
+			// if there is user calling api/users/profile to get the user
 			if (!user.name) {
 				dispatch(getUserDetails('profile'));
 			} else {
+				// Auto filling name and email from the store
 				setName(user.name);
 				setEmail(user.email);
 			}
@@ -38,7 +47,7 @@ const ProfileScreen = ({ location, history }) => {
 		if (password !== confirmPassword) {
 			setMessage('Passwords do not match');
 		} else {
-			// Dispatch update user
+			dispatch(updateUserDetails({ id: user._id, name, email, password }));
 		}
 	};
 	return (
@@ -46,10 +55,11 @@ const ProfileScreen = ({ location, history }) => {
 			<Col md={3}>
 				<h2>User Profile</h2>
 				{error && <Message variant="danger">{error}</Message>}
+				{success && <Message variant="success">Profile Updated</Message>}
 				{message && <Message variant="danger">{message}</Message>}
 				{loading && <Loader />}
 				<Form onSubmit={submitHandler}>
-					<Form.Group controlId="Name">
+					<Form.Group controlId="name">
 						<Form.Label>Name</Form.Label>
 						<Form.Control
 							type="text"
@@ -76,7 +86,7 @@ const ProfileScreen = ({ location, history }) => {
 							onChange={(e) => setPassword(e.target.value)}
 						></Form.Control>
 					</Form.Group>
-					<Form.Group controlId="password">
+					<Form.Group controlId="confirm password">
 						<Form.Label>Confirm Password</Form.Label>
 						<Form.Control
 							type="password"
