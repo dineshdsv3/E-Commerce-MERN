@@ -35,7 +35,6 @@ export const getOrderById = asyncHandler(async (req, res) => {
 	// Get order along with the user associated with the order
 	const order = await Order.findById(req.params.id).populate('user', 'name email');
 	// console.log(order);
-
 	if (order) {
 		res.json(order);
 	} else {
